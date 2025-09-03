@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Interativo</title>
+</head>
+<body>
+  <h2>Quiz de Conhecimentos Gerais</h2>
+
+  <p id="pergunta"></p>
+  <div id="opcoes"></div>
+  <p id="feedback"></p>
+  <p>Acertos: <span id="acertos">0</span></p>
+  <button id="proxima" style="display:none;">Próxima pergunta</button>
+
+  <script>
+    const quiz = [
+      {
+        pergunta: "Qual é a capital do Brasil?",
+        opcoes: ["Rio de Janeiro", "Brasília", "São Paulo", "Salvador"],
+        correta: 1
+      },
+      {
+        pergunta: "Quanto é 5 x 6?",
+        opcoes: ["30", "20", "15", "25"],
+        correta: 0
+      },
+      {
+        pergunta: "Quem escreveu 'Dom Casmurro'?",
+        opcoes: ["Machado de Assis", "Monteiro Lobato", "Carlos Drummond", "José de Alencar"],
+        correta: 0
+      }
+    ];
+
+    let indice = 0;
+    let pontos = 0;
+
+    const perguntaEl = document.getElementById("pergunta");
+    const opcoesEl = document.getElementById("opcoes");
+    const feedbackEl = document.getElementById("feedback");
+    const acertosEl = document.getElementById("acertos");
+    const btnProxima = document.getElementById("proxima");
+
+    function mostrarPergunta() {
+      let q = quiz[indice];
+      perguntaEl.innerText = q.pergunta;
+      opcoesEl.innerHTML = "";
+      feedbackEl.innerText = "";
+      btnProxima.style.display = "none";
+
+      q.opcoes.forEach((opcao, i) => {
+        let btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(i);
+        opcoesEl.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(i) {
+      let q = quiz[indice];
+      if (i === q.correta) {
+        feedbackEl.innerText = "✅ Correto!";
+        pontos++;
+        acertosEl.innerText = pontos;
+      } else {
+        feedbackEl.innerText = "❌ Incorreto!";
+      }
+      // Desativar botões após resposta
+      Array.from(opcoesEl.children).forEach(btn => btn.disabled = true);
+      btnProxima.style.display = "inline";
+    }
+
+    btnProxima.onclick = () => {
+      indice++;
+      if (indice < quiz.length) {
+        mostrarPergunta();
+      } else {
+        perguntaEl.innerText = "Fim do Quiz!";
+        opcoesEl.innerHTML = "";
+        feedbackEl.innerText = "Você acertou " + pontos + " de " + quiz.length;
+        btnProxima.style.display = "none";
+      }
+    };
+
+    // Iniciar quiz
+    mostrarPergunta();
+  </script>
+</body>
+</html>

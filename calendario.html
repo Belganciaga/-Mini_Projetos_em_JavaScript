@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dia da Semana</title>
+</head>
+<body>
+  <h2>Descubra o dia da semana</h2>
+
+  <!-- Campo para escolher a data -->
+  <input type="date" id="data">
+
+  <!-- Resultado -->
+  <p id="resultado">Escolha uma data acima ⬆️</p>
+
+  <script>
+    const input = document.getElementById("data");
+    const resultado = document.getElementById("resultado");
+
+    input.addEventListener("change", function() {
+      let valor = input.value; // formato: "YYYY-MM-DD"
+      if (valor) {
+        let data = new Date(valor + "T00:00:00"); // garante fuso horário
+        let dias = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", 
+                    "Quinta-feira", "Sexta-feira", "Sábado"];
+        
+        let diaSemana = dias[data.getDay()]; // getDay() -> 0=domingo ... 6=sábado
+        resultado.innerText = "Esse dia caiu em: " + diaSemana;
+      }
+    });
+  </script>
+</body>
+</html>

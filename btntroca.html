@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botao que muda mensagem</title>
+</head>
+<body>
+    <p id="mensagem">Clique aqui para mudar texto</p>
+    <button id="botao"> Mudar texto</button>
+
+    <script>
+        const mensagemEl = document.getElementById('mensagem');
+        const botao = document.getElementById ('botao');
+
+        const mensagens = [
+            "msg 1",
+            "msg 2",
+            "msg 3",
+            "msg 4"
+        ];
+
+        let idx = 0;
+
+        botao.addEventListener("click", function(){
+        idx = (idx+1) % mensagens.length;
+        mensagemEl.textContent = mensagens[idx];
+        });
+
+
+    </script>
+    
+</body>
+</html>

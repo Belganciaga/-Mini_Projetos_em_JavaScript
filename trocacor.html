@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botao que muda cor</title>
+</head>
+<body>
+    <p id="mensagem">Clique aqui para mudar a cor</p>
+    <button id="botao"> Mudar cor</button>
+
+    <script>
+        const cores = ["lightblue", "lightgreen", "lightcoral", "khaki", "plum"];
+        const botao = document.getElementById ('botao');
+
+
+        let idx = 0;
+
+        botao.addEventListener("click", function(){
+        idx = (idx+1) % cores.length;
+        document.body.style.backgroundColor = cores[idx];
+        });
+
+
+    </script>
+    
+</body>
+</html>
