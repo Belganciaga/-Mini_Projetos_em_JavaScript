@@ -1,86 +1,248 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-    <title>Calculadora • Belganciaga</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-    a.voltar{align-self:flex-start;margin-bottom:20px;color:#ffd700;text-decoration:none;font-size:.9rem;position:fixed;top:20px;left:20px}
-    a.voltar:hover{text-decoration:underline}
-    .calc{background:#1a1a1a;border-radius:24px;padding:24px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(255,215,0,.05)}
-    .display{background:#0a0a0a;border-radius:14px;padding:20px 18px 14px;margin-bottom:20px;text-align:right;border:1px solid #333}
-    .expr{color:#666;font-size:.85rem;min-height:20px;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .result{font-size:2.2rem;font-weight:300;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .btns{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-    button{padding:18px 0;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;transition:all .15s ease;font-family:'Segoe UI',sans-serif}
-    .btn-num{background:#252525;color:#fff}
-    .btn-num:hover{background:#333}
-    .btn-op{background:#2a2400;color:#ffd700;font-weight:600}
-    .btn-op:hover{background:#3a3200}
-    .btn-eq{background:#ffd700;color:#0a0a0a;font-weight:700;grid-column:span 2}
-    .btn-eq:hover{background:#ffea00}
-    .btn-clr{background:#1a0a0a;color:#ff6b6b;font-weight:600}
-    .btn-clr:hover{background:#2a1010}
-    .btn-zero{grid-column:span 2}
-    button:active{transform:scale(.94)}
-    </style>
-  </head>
-  <body>
-    <a href="menu.html" class="voltar">← Menu</a>a>
-    <div class="calc">
-        <div class="display">
-              <div class="expr" id="expr"></div>div>
-              <div class="result" id="result">0</div>div>
-        </div>div>
-        <div class="btns">
-              <button class="btn-clr" onclick="limpar()">C</button>button>
-              <button class="btn-clr" onclick="deletar()">⌫</button>button>
-              <button class="btn-op" onclick="inserir('%')">%</button>button>
-              <button class="btn-op" onclick="inserir('/')">÷</button>button>
-              <button class="btn-num" onclick="inserir('7')">7</button>button>
-              <button class="btn-num" onclick="inserir('8')">8</button>button>
-              <button class="btn-num" onclick="inserir('9')">9</button>button>
-              <button class="btn-op" onclick="inserir('*')">×</button>button>
-              <button class="btn-num" onclick="inserir('4')">4</button>button>
-              <button class="btn-num" onclick="inserir('5')">5</button>button>
-              <button class="btn-num" onclick="inserir('6')">6</button>button>
-              <button class="btn-op" onclick="inserir('-')">−</button>button>
-              <button class="btn-num" onclick="inserir('1')">1</button>button>
-              <button class="btn-num" onclick="inserir('2')">2</button>button>
-              <button class="btn-num" onclick="inserir('3')">3</button>button>
-              <button class="btn-op" onclick="inserir('+')">+</button>button>
-              <button class="btn-num btn-zero" onclick="inserir('0')">0</button>button>
-              <button class="btn-num" onclick="inserir('.')">.</button>button>
-              <button class="btn-eq" onclick="calcular()">=</button>button>
-        </div>div>
-    </div>div>
-    <script>
-      let expr='';
-      const exprEl=document.getElementById('expr');
-      const resEl=document.getElementById('result');
-      function inserir(v){expr+=v;resEl.textContent=expr}
-      function limpar(){expr='';resEl.textContent='0';exprEl.textContent=''}
-      function deletar(){expr=expr.slice(0,-1);resEl.textContent=expr||'0'}
-      function calcular(){
-          try{
-                exprEl.textContent=expr+'=';
-                const r=Function('"use strict";return('+expr+')')();
-                resEl.textContent=parseFloat(r.toFixed(10));
-                expr=String(parseFloat(r.toFixed(10)));
-          }catch{resEl.textContent='Erro';expr=''}
-      }
-      document.addEventListener('keydown',e=>{
-          if('0123456789.+-*/%'.includes(e.key))inserir(e.key);
-          else if(e.key==='Enter')calcular();
-          else if(e.key==='Backspace')deletar();
-          else if(e.key==='Escape')limpar();
-      });
-    </script>
-  </body>
-</html>html>
-    </script>
-  </body>
-  </style></title>
-  </head>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Calculadora • Belganciaga</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box
+}
+
+body{
+    background:#0a0a0a;
+    color:#fff;
+    font-family:'Segoe UI',sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px
+}
+
+a.voltar{
+    align-self:flex-start;
+    margin-bottom:20px;
+    color:#ffd700;
+    text-decoration:none;
+    font-size:.9rem;
+    position:fixed;
+    top:20px;
+    left:20px
+}
+
+a.voltar:hover{
+    text-decoration:underline
+}
+
+.calc{
+    background:#1a1a1a;
+    border-radius:24px;
+    padding:24px;
+    width:320px;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.6),
+        0 0 40px rgba(255,215,0,.05)
+}
+
+.display{
+    background:#0a0a0a;
+    border-radius:14px;
+    padding:20px 18px 14px;
+    margin-bottom:20px;
+    text-align:right;
+    border:1px solid #333
+}
+
+.expr{
+    color:#666;
+    font-size:.85rem;
+    min-height:20px;
+    margin-bottom:4px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+
+.result{
+    font-size:2.2rem;
+    font-weight:300;
+    color:#fff;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+
+.btns{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px
+}
+
+button{
+    padding:18px 0;
+    border:none;
+    border-radius:12px;
+    font-size:1.1rem;
+    cursor:pointer;
+    transition:all .15s ease;
+    font-family:'Segoe UI',sans-serif
+}
+
+.btn-num{
+    background:#252525;
+    color:#fff
+}
+
+.btn-num:hover{
+    background:#333
+}
+
+.btn-op{
+    background:#2a2400;
+    color:#ffd700;
+    font-weight:600
+}
+
+.btn-op:hover{
+    background:#3a3200
+}
+
+.btn-eq{
+    background:#ffd700;
+    color:#0a0a0a;
+    font-weight:700;
+    grid-column:span 2
+}
+
+.btn-eq:hover{
+    background:#ffea00
+}
+
+.btn-clr{
+    background:#1a0a0a;
+    color:#ff6b6b;
+    font-weight:600
+}
+
+.btn-clr:hover{
+    background:#2a1010
+}
+
+.btn-zero{
+    grid-column:span 2
+}
+
+button:active{
+    transform:scale(.94)
+}
+</style>
+</head>
+
+<body>
+
+<a href="menu.html" class="voltar">← Menu</a>
+
+<div class="calc">
+
+    <div class="display">
+        <div class="expr" id="expr"></div>
+        <div class="result" id="result">0</div>
+    </div>
+
+    <div class="btns">
+
+        <button class="btn-clr" onclick="limpar()">C</button>
+        <button class="btn-clr" onclick="deletar()">⌫</button>
+        <button class="btn-op" onclick="inserir('%')">%</button>
+        <button class="btn-op" onclick="inserir('/')">÷</button>
+
+        <button class="btn-num" onclick="inserir('7')">7</button>
+        <button class="btn-num" onclick="inserir('8')">8</button>
+        <button class="btn-num" onclick="inserir('9')">9</button>
+        <button class="btn-op" onclick="inserir('*')">×</button>
+
+        <button class="btn-num" onclick="inserir('4')">4</button>
+        <button class="btn-num" onclick="inserir('5')">5</button>
+        <button class="btn-num" onclick="inserir('6')">6</button>
+        <button class="btn-op" onclick="inserir('-')">−</button>
+
+        <button class="btn-num" onclick="inserir('1')">1</button>
+        <button class="btn-num" onclick="inserir('2')">2</button>
+        <button class="btn-num" onclick="inserir('3')">3</button>
+        <button class="btn-op" onclick="inserir('+')">+</button>
+
+        <button class="btn-num btn-zero" onclick="inserir('0')">0</button>
+        <button class="btn-num" onclick="inserir('.')">.</button>
+
+        <button class="btn-eq" onclick="calcular()">=</button>
+
+    </div>
+
+</div>
+
+<script>
+let expr='';
+
+const exprEl=document.getElementById('expr');
+const resEl=document.getElementById('result');
+
+function inserir(v){
+    expr+=v;
+    resEl.textContent=expr;
+}
+
+function limpar(){
+    expr='';
+    resEl.textContent='0';
+    exprEl.textContent='';
+}
+
+function deletar(){
+    expr=expr.slice(0,-1);
+    resEl.textContent=expr||'0';
+}
+
+function calcular(){
+    try{
+        exprEl.textContent=expr+'=';
+
+        const r=Function('"use strict";return('+expr+')')();
+
+        resEl.textContent=parseFloat(r.toFixed(10));
+
+        expr=String(parseFloat(r.toFixed(10)));
+
+    }catch{
+        resEl.textContent='Erro';
+        expr='';
+    }
+}
+
+document.addEventListener('keydown',e=>{
+
+    if('0123456789.+-*/%'.includes(e.key)){
+        inserir(e.key);
+    }
+
+    else if(e.key==='Enter'){
+        calcular();
+    }
+
+    else if(e.key==='Backspace'){
+        deletar();
+    }
+
+    else if(e.key==='Escape'){
+        limpar();
+    }
+
+});
+</script>
+
+</body>
+</html>
