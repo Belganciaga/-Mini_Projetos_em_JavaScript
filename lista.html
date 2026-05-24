@@ -1,42 +1,319 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Filtro de Lista</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lista Inteligente</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    linear-gradient(135deg,#0a0a0a,#1b1b1b);
+    font-family:'Segoe UI',sans-serif;
+    color:white;
+    padding:20px;
+}
+
+.card{
+    width:380px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:28px;
+    padding:30px;
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.5),
+    0 0 30px rgba(255,215,0,.05);
+    animation:entrada .7s ease;
+}
+
+h1{
+    text-align:center;
+    color:#ffd700;
+    margin-bottom:10px;
+}
+
+.sub{
+    text-align:center;
+    color:#bdbdbd;
+    margin-bottom:25px;
+    font-size:.95rem;
+}
+
+.input-group{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+input{
+    flex:1;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#242424;
+    color:white;
+    outline:none;
+    font-size:1rem;
+}
+
+input:focus{
+    box-shadow:0 0 0 2px #ffd700;
+}
+
+button{
+    border:none;
+    border-radius:14px;
+    padding:14px 18px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+}
+
+.btn-add{
+    background:#ffd700;
+    color:#111;
+}
+
+.btn-add:hover{
+    background:#ffe95c;
+}
+
+ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:20px;
+}
+
+li{
+    background:#202020;
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    transition:.2s;
+    border:1px solid rgba(255,255,255,.05);
+}
+
+li:hover{
+    transform:translateX(5px);
+}
+
+.remover{
+    background:#2c1010;
+    color:#ff6b6b;
+    padding:10px 12px;
+    font-size:.9rem;
+}
+
+.remover:hover{
+    background:#3d1515;
+}
+
+.vazio{
+    text-align:center;
+    color:#777;
+    margin-top:18px;
+}
+
+@keyframes entrada{
+
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+</style>
 </head>
+
 <body>
-  <h2>Lista de Produtos</h2>
 
-  <!-- Campo de busca -->
-  <input type="text" id="busca" placeholder="Digite para filtrar...">
+<div class="card">
 
-  <!-- Lista -->
-  <ul id="lista">
-    <li>Arroz</li>
-    <li>Feijão</li>
-    <li>Macarrão</li>
-    <li>Leite</li>
-    <li>Pão</li>
-    <li>Café</li>
-    <li>Açúcar</li>
-  </ul>
+    <h1>🛒 Lista Inteligente</h1>
 
-  <script>
-    const input = document.getElementById("busca");
-    const itens = document.querySelectorAll("#lista li");
+    <p class="sub">
+        Adicione, pesquise e remova produtos
+    </p>
 
-    input.addEventListener("keyup", function() {
-      let filtro = input.value.toLowerCase();
+    <!-- pesquisar -->
+    <div class="input-group">
+        <input 
+            type="text" 
+            id="busca" 
+            placeholder="Pesquisar produto..."
+        >
+    </div>
 
-      itens.forEach(function(item) {
-        let texto = item.textContent.toLowerCase();
-        if (texto.includes(filtro)) {
-          item.style.display = ""; // mostra
-        } else {
-          item.style.display = "none"; // esconde
-        }
-      });
+    <!-- adicionar -->
+    <div class="input-group">
+
+        <input 
+            type="text" 
+            id="novoProduto" 
+            placeholder="Novo produto..."
+        >
+
+        <button class="btn-add" id="addBtn">
+            +
+        </button>
+
+    </div>
+
+    <!-- lista -->
+    <ul id="lista">
+
+        <li>
+            🍚 Arroz
+            <button class="remover">X</button>
+        </li>
+
+        <li>
+            ☕ Café
+            <button class="remover">X</button>
+        </li>
+
+        <li>
+            🍞 Pão
+            <button class="remover">X</button>
+        </li>
+
+    </ul>
+
+    <p class="vazio" id="vazio">
+        Nenhum produto encontrado 😢
+    </p>
+
+</div>
+
+<script>
+
+const busca = document.getElementById("busca");
+const lista = document.getElementById("lista");
+const novoProduto = document.getElementById("novoProduto");
+const addBtn = document.getElementById("addBtn");
+const vazio = document.getElementById("vazio");
+
+
+// remover item
+function ativarRemover(){
+
+    const botoes = document.querySelectorAll(".remover");
+
+    botoes.forEach(btn => {
+
+        btn.onclick = function(){
+
+            btn.parentElement.remove();
+
+            verificarLista();
+
+        };
+
     });
-  </script>
+
+}
+
+
+// adicionar item
+addBtn.addEventListener("click", function(){
+
+    let texto = novoProduto.value.trim();
+
+    if(texto !== ""){
+
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            🛍️ ${texto}
+            <button class="remover">X</button>
+        `;
+
+        lista.appendChild(li);
+
+        novoProduto.value = "";
+
+        ativarRemover();
+
+        verificarLista();
+
+    }
+
+});
+
+
+// pesquisar item
+busca.addEventListener("keyup", function(){
+
+    const filtro = busca.value.toLowerCase();
+
+    const itens = lista.querySelectorAll("li");
+
+    let encontrados = 0;
+
+    itens.forEach(item => {
+
+        const texto = item.textContent.toLowerCase();
+
+        if(texto.includes(filtro)){
+
+            item.style.display = "flex";
+
+            encontrados++;
+
+        }else{
+
+            item.style.display = "none";
+
+        }
+
+    });
+
+    vazio.style.display = encontrados === 0
+    ? "block"
+    : "none";
+
+});
+
+
+// verifica lista vazia
+function verificarLista(){
+
+    const itens = lista.querySelectorAll("li");
+
+    vazio.style.display = itens.length === 0
+    ? "block"
+    : "none";
+
+}
+
+
+ativarRemover();
+verificarLista();
+
+</script>
+
 </body>
 </html>
